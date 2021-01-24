@@ -13,6 +13,7 @@
     Skip to STEP 3.
 */
 
+
 /*
   STEP 4: Pass the data received from Github into your function,
     and append the returned markup to the DOM as a child of .cards
@@ -29,7 +30,6 @@
     user, and adding that card to the DOM.
 */
 
-const followersArray = [];
 
 /*
   STEP 3: Create a function that accepts a single object as its only argument.
@@ -51,6 +51,59 @@ const followersArray = [];
     </div>
 */
 
+
+function userCard(obj){
+
+  //creating elements
+  const card = document.createElement('div');
+  const imagen = document.createElement('img');
+  const cardInfo = document.createElement('div');
+  const name = document.createElement('h3');
+  const userName = document.createElement('p');
+  const userLocation = document.createElement ('p');
+  const userProfile = document.createElement('p');
+  const userUrl = document.createElement('a');
+  const userFollowers = document.createElement('p');
+  const userFollowing = document.createElement('p');
+  const userBio = document.createElement('p');
+  // setting classnames
+  card.classList.add("card");
+  cardInfo.classList.add("card-info");
+  name.classList.add("name");
+  userName.classList.add("username");
+
+  //creating the hierarchy
+  card.appendChild('imagen');
+  card.appendChild('cardInfo');
+  cardInfo.appendChild('name');
+  cardInfo.appendChild('userName');
+  cardInfo.appendChild('userLocation');
+  cardInfo.appendChild('userProfile');
+  //cardInfo.appendChild('userUrl');
+  cardInfo.appendChild('userFollowers');
+  cardInfo.appendChild('userFollowing');
+  cardInfo.appendChild('userBio');
+  userProfile.appendChild('userUrl')
+
+  //setting text content
+  
+  imagen.src = obj.avatar_url;
+  name.textContent = `Name : ${obj.name}`;
+  userName.textContent= `User name: ${obj.loging}`;
+  userLocation.textContent = `Location: ${obj.location}`;
+  userUrl.textContent = `${obj.html_url}`;
+  userFollowers.textContent= `Followers: ${obj.followers}`;
+  userFollowing.textContent = `Following: ${obj.following}`;
+  userBio.textContent = `Bio: ${obj.bio}`;
+
+
+ 
+  
+
+return card;
+}
+
+
 /*
   List of LS Instructors Github username's:
     tetondan
@@ -59,3 +112,37 @@ const followersArray = [];
     luishrd
     bigknell
 */
+const getPromise = axios
+.get('https://api.github.com/users/Liliana-Leyva')
+.then((res) => {
+  console.log(res);
+  const information = userCard(res.obj);
+  document.querySelector(".cards").appendChild(information);
+})
+.catch((err) => {
+  console.log("There is an error!",err);
+});
+
+console.log(getPromise);
+
+
+
+
+
+
+const followersArray = ['tetondan','dustinmyers','justsml','luishrd','bigknell'];
+followersArray.forEach((i) => {
+  axios
+  .get(`'https://api.github.com/users/${i}'`)
+  then((res)=>{
+    console.log(res.obj);
+    const information= userCard(res.obj);
+    documents.querySelector(".cards").appendChild(information);
+  })
+  .catch((err) => {
+    console.log(err);
+  });
+})
+
+const allCards = getPromise.obj;
+console.log(allCards);
